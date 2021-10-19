@@ -2,38 +2,44 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet,View,Text,FlatList,Image, TouchableOpacity
 } from 'react-native';
 
-export default function display(){
-  const [data, setData]=React.useState([])
-  useEffect(()=>{
-    fetch("http://localhost:3900/students/").then((result)=>{
-      result.json().then((resp)=>{
-        setData(resp)
-      })
-    })
-  },[])
-  console.log(data)
-  return(
-    <div>
-      <table border="1">
-        <tr>
-          <td>Id</td>
-          <td>first_Name</td>
-          <td>Last_Name</td>
-          <td>Gender</td>
-          <td>Email</td>
-        </tr>
-        {
-        data.map((items)=>
-          <tr>
-          <td>{items.id}</td>
-          <td>{items.first_name}</td>
-          <td>{items.last_name}</td>
-          <td>{items.email}</td>
-          <td>{items.gender}</td>
-        </tr>
-        )
-    }
-    </table>
-    </div>
-  );
-}  
+export default class display extends React.Component{
+      constructor(){
+                  super();
+                  this.state={
+                   data:[]
+                  }
+                }
+
+  componentDidMount(){
+                    this.callApi();
+                   }
+
+// callApi Method defination............................
+          async callApi(){
+                      let resp=await fetch('http://localhost:3900/students')
+                      let respJson=await resp.json();
+                      this.setState({data:respJson})
+                      // console.warn("sgow data",respJson)
+                       }
+
+    render(){
+          // console.warn(this.state.data)
+             return(
+                     <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                        <Text style={{ fontSize:20,}}>Api data</Text>
+                        <FlatList
+                            data={this.state.data}
+                            renderItem={({item})=>
+                            <View style={{flexDirection:'row',flex:1}}>
+                              <Text style={{fontSize:12,marginLeft:8}}>{item.id}</Text>
+                              <Text style={{fontSize:12,marginLeft:8}}>{item.first_name}</Text>
+                              <Text style={{fontSize:12,marginLeft:8}}>{item.last_name}</Text>
+                              <Text style={{fontSize:12,marginLeft:8}}>{item.email}</Text>
+                              <Text style={{fontSize:12,marginLeft:8}}>{item.gender}</Text>
+                            </View>
+                            }
+                          />
+                       </View>
+                     );
+                    }  
+                  }

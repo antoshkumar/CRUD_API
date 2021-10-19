@@ -1,8 +1,10 @@
 const express = require('express')
 const students =require('./students')
+const cors=require('cors')
 const app=express()
-app.use(express.json())
 
+app.use(express.json())
+app.use(cors());
 app.listen(3900,()=>{
   console.log("Server is running")
 })
@@ -58,3 +60,19 @@ app.put('/students/:id',(req,res)=>{
     res.status(404)
   }
 })
+// delete method.........
+app.delete('/students/:id',(req,res)=>{
+  const id =req.params.id;
+  let index=students.findIndex((student)=>{
+    return (student.id==Number.parseInt(id))
+  })
+  if(index>=0){
+    let std=students[index];
+   students.splice(index,1)
+   res.json(std)
+  }else
+  {
+    res.status(404)
+  }
+}
+  )

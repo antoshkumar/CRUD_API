@@ -4,6 +4,7 @@
     "slug": "Express_Server",
     "version": "1.0.0",
     "orientation": "portrait",
+    "proxy": "http://localhost:3900",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
